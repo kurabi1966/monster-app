@@ -10,6 +10,7 @@ const App = () => {
   const url = "https://jsonplaceholder.typicode.com/users";
 
   const [monsters, setMonsters] = useState([]);
+  const [filteredMonsters, setFilteredMonsters] = useState(monsters);
   const [searchField, setSearchField] = useState("");
   const [filterField, setFilterField] = useState("1");
 
@@ -22,7 +23,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect");
     fetch(url)
       .then((response) => {
         return response.json();
@@ -32,12 +32,18 @@ const App = () => {
       });
   }, []);
 
-  let filteredMonsters = [];
-  if (monsters.length > 0) {
-    filteredMonsters = monsters.filter((monster) => {
+  useEffect(() => {
+    const newFilteredMonsters = monsters.filter((monster) => {
       return monster.name.toLowerCase().includes(searchField);
     });
-  }
+    setFilteredMonsters(newFilteredMonsters);
+  }, [monsters, searchField]);
+
+  // if (monsters.length > 0) {
+  //   filteredMonsters = monsters.filter((monster) => {
+  //     return monster.name.toLowerCase().includes(searchField);
+  //   });
+  // }
 
   return (
     <div className="App">
